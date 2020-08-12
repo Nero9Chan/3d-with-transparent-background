@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@android:style/TextAppearance.Medium"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#4287f5">
+
+    <TextView
+        android:id="@+id/dialog_load_model_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/load_model"
+        android:textSize="24sp"
+        android:background="#4287f5">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#4287f5">
+
+        <TextView
+            android:id="@+id/dialog_load_model_texture"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/texture"
+            android:textSize="14sp"
+            android:background="#4287f5"/>
+
+        <Button
+            android:id="@+id/browse_texture_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:background="#4287f5"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/dialog_load_model_invert_textures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/invert_texture_coordinates"
+        android:textSize="14sp"
+        android:background="#4287f5"/>
+
+    <Button
+        android:id="@+id/dialog_load_model_load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/load_model"
+        android:textSize="14sp"
+        android:background="#4287f5"/>
+
+</LinearLayout>
