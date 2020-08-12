@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.Loader;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,7 +58,7 @@ public class ModelActivity extends Activity implements EventListener {
      * Background GL clear color. Default is light gray
      */
     //private float[] backgroundColor = new float[]{0.0f, 3.0f, 4.0f, 1.0f}; //light blue
-    private float[] backgroundColor = new float[]{0.0f, 0.0f, 0.0f, 8.0f};
+    private float[] backgroundColor = new float[]{0.0f, 0.0f, 0.0f, 0.0f};
 
     private ModelSurfaceView gLView;
     private TouchController touchController;
@@ -119,6 +120,16 @@ public class ModelActivity extends Activity implements EventListener {
         try {
             Log.i("ModelActivity","Loading GLSurfaceView...");
             gLView = new ModelSurfaceView(this, backgroundColor, this.scene);
+            // We want an 8888 pixel format because that's required for
+            // a translucent window.
+            // And we want a depth buffer.
+
+            // Tell the cube renderer that we want to render a translucent version
+            // of the cube:
+            //gLView.setRenderer(new CubeRenderer(true));
+            // Use a surface format with an Alpha channel:
+            gLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
             gLView.addListener(this);
             setContentView(gLView);
             scene.setView(gLView);

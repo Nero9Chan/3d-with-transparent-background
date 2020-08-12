@@ -40,6 +40,7 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 			// This is the actual renderer of the 3D space
 			mRenderer = new ModelRenderer(parent, this, backgroundColor, scene);
 			mRenderer.addListener(this);
+			setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 			setRenderer(mRenderer);
 		}catch (Exception e){
 			Log.e("ModelActivity",e.getMessage(),e);
