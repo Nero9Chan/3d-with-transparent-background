@@ -30,13 +30,18 @@ public final class CameraController implements EventListener {
             switch (touchEvent.getAction()){
                 case CLICK:
                     break;
+                case DRAG: //added on 13/8/2020
+                    camera.xPos = camera.xPos+touchEvent.getdX()/10;
+                    camera.yPos = camera.yPos+touchEvent.getdY()/10;
+                    Log.v("pos", Float.toString(camera.xPos) + Float.toString(camera.yPos));
+                    break;
                 case MOVE:
                     float dx1 = touchEvent.getdX();
                     float dy1 = touchEvent.getdY();
-                    float max = Math.max(width, height);
+                    float nmax = Math.max(width, height);
                     Log.v("CameraController", "Translating camera (dx,dy) '" + dx1 + "','" + dy1 + "'...");
-                    dx1 = (float) (dx1 / max * Math.PI * 2);
-                    dy1 = (float) (dy1 / max * Math.PI * 2);
+                    dx1 = (float) (dx1 / nmax * Math.PI * 2);
+                    dy1 = (float) (dy1 / nmax * Math.PI * 2);
                     camera.translateCamera(dx1, dy1);
                     break;
                 case PINCH:

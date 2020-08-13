@@ -4,13 +4,14 @@ import java.util.EventObject;
 
 public class TouchEvent extends EventObject {
 
-    public enum Action {CLICK, MOVE, PINCH, ROTATE, SPREAD}
+    public enum Action {CLICK, MOVE, PINCH, ROTATE, SPREAD, DRAG}
 
     public static final Action CLICK = Action.CLICK;
     public static final Action MOVE = Action.MOVE;
     public static final Action PINCH = Action.PINCH;
     public static final Action SPREAD = Action.SPREAD;
     public static final Action ROTATE = Action.ROTATE;
+    public static final Action DRAG = Action.DRAG;
 
     private final int width;
     private final int height;

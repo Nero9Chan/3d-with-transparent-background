@@ -50,6 +50,9 @@ public class TouchController {
     private boolean fingersAreClosing = false;
     private boolean isRotating = false;
 
+    private boolean isSelected = false; // for dragging (moving model)
+    //^^ added on 13/8/2020
+
     private boolean gestureChanged = false;
 	private boolean moving = false;
 	private boolean simpleTouch = false;
@@ -205,26 +208,25 @@ public class TouchController {
 
 		if (pointerCount == 1 && simpleTouch) {
 			fireEvent(new TouchEvent(this, TouchEvent.CLICK, width, height, x1, y1));
+			isSelected = !isSelected;
+			Log.v("selected", Boolean.toString(isSelected));
 		}
 
 		if (touchDelay > 1) {
 			// INFO: Process gesture
 			if (pointerCount == 1 && currentPress1 > 4.0f) {
 			} else if (pointerCount == 1) {
-				fireEvent(new TouchEvent(this, TouchEvent.MOVE, width, height, previousX1, previousY1,
-						x1, y1, dx1, dy1, 0,
-						null));
-				touchStatus = TOUCH_STATUS_MOVING_WORLD;
+				if(isSelected){
+					fireEvent(new TouchEvent(this, TouchEvent.DRAG, width, height, previousX1, previousY1, x1, y1, dx1, dy1, 0, null));
+					//touchStatus = 6;
+				}
+				else{
+					fireEvent(new TouchEvent(this, TouchEvent.MOVE, width, height, previousX1, previousY1, x1, y1, dx1, dy1, 0, null));
+					touchStatus = TOUCH_STATUS_MOVING_WORLD;}
 			} else if (pointerCount == 2) {
 				if (fingersAreClosing) {
-					fireEvent(new TouchEvent(this, TouchEvent.PINCH, width, height, previousX1, previousY1,
-							x1, y1, dx1, dy1, (length - previousLength), null));
+					fireEvent(new TouchEvent(this, TouchEvent.PINCH, width, height, previousX1, previousY1, x1, y1, dx1, dy1, (length - previousLength), null));
 					touchStatus = TOUCH_STATUS_ZOOMING_CAMERA;
-				}
-				if (isRotating) {
-					fireEvent(new TouchEvent(this, TouchEvent.ROTATE, width, height, previousX1, previousY1
-							, x1, y1, dx1, dy1, 0, rotationVector));
-					touchStatus = TOUCH_STATUS_ROTATING_CAMERA;
 				}
 			}
 		}

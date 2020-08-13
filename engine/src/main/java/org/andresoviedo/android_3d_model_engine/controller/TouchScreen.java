@@ -1,6 +1,7 @@
 package org.andresoviedo.android_3d_model_engine.controller;
 
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ class TouchScreen {
 	private float[] lastEvent = null;
 
 	public boolean onTouch(View v, MotionEvent event) {
+		Log.v("TouchScreen","Processing MotionEvent...");
 		// handle touch events here
 		ImageView view = (ImageView) v;
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
