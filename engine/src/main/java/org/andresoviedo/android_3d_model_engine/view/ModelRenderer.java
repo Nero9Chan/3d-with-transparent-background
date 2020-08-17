@@ -267,6 +267,7 @@ public class ModelRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
 
         AndroidUtils.fireEvent(listeners, new ViewEvent(this, ViewEvent.Code.SURFACE_CREATED, 0, 0));
+
     }
 
     @Override
@@ -285,6 +286,8 @@ public class ModelRenderer implements GLSurfaceView.Renderer {
         Matrix.frustumM(projectionMatrixLeft, 0, -ratio, ratio, -1, 1, getNear(), getFar());
 
         AndroidUtils.fireEvent(listeners, new ViewEvent(this, ViewEvent.Code.SURFACE_CHANGED, width, height));
+
+        Matrix.translateM(projectionMatrix,0,0,0,0);
     }
 
     @Override

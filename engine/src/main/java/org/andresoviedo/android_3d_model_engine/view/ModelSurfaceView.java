@@ -2,6 +2,7 @@ package org.andresoviedo.android_3d_model_engine.view;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -22,6 +23,10 @@ import java.util.List;
  *
  */
 public class ModelSurfaceView extends GLSurfaceView implements EventListener {
+
+	private float previousX = 0.0f;
+	private float previousY = 0.0f;
+	private boolean isDown = false;
 
 	private final ModelRenderer mRenderer;
 
@@ -46,6 +51,7 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 			Log.e("ModelActivity",e.getMessage(),e);
 			Toast.makeText(parent, "Error loading shaders:\n" +e.getMessage(), Toast.LENGTH_LONG).show();
 			throw new RuntimeException(e);
+
 		}
 	}
 
@@ -67,12 +73,45 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		try {
+		/*try {
 			return touchController.onTouchEvent(event);
 		} catch (Exception ex) {
 			Log.e("ModelSurfaceView","Exception: "+ ex.getMessage(),ex);
+		}*/
+		//return false;
+
+		float x = event.getX();
+		float y = event.getY();
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				previousX = x;
+				previousY = y;
+				isDown = true;
+				break;
+
+			case MotionEvent.ACTION_MOVE:
+				float dx = previousX - event.getX();
+				float dy = previousY - event.getY();
+
+				Matrix.translateM(mRenderer.getProjectionMatrix(),0,-dx/15,dy/15,0);
+
+				requestRender();
+
+				if(isDown){
+					previousX = event.getX();
+					previousY = event.getY();
+				}
+
+				break;
+
+			case MotionEvent.ACTION_UP:
+				isDown = false;
+				break;
 		}
-		return false;
+
+
+		return true;
 	}
 
 	public ModelRenderer getModelRenderer() {

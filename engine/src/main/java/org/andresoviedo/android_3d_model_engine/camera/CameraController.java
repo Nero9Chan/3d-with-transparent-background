@@ -31,8 +31,12 @@ public final class CameraController implements EventListener {
                 case CLICK:
                     break;
                 case DRAG: //added on 13/8/2020
-                    camera.xPos = camera.xPos+touchEvent.getdX()/10;
-                    camera.yPos = camera.yPos+touchEvent.getdY()/10;
+                    //camera.xPos = camera.xPos+touchEvent.getdX()/10;
+                    //camera.yPos = camera.yPos+touchEvent.getdY()/10;
+                    camera.xView = camera.xView+touchEvent.getdX()/10;
+                    camera.yView = camera.yView+touchEvent.getdY()/10;
+                    //camera.xUp = camera.xUp+touchEvent.getdX()/10;
+                    //camera.yUp = camera.yUp+touchEvent.getdY()/10;
                     Log.v("pos", Float.toString(camera.xPos) + Float.toString(camera.yPos));
                     break;
                 case MOVE:
