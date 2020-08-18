@@ -78,10 +78,10 @@ public class MenuActivity extends ListActivity {
         try {
             switch (action) {
                 case DEMO:
-                    //Intent demoIntent = new Intent(MenuActivity.this.getApplicationContext(), ModelActivity.class);
-                    Intent demoIntent = new Intent(MenuActivity.this.getApplicationContext(), TranslucentGLSurfaceViewActivity.class);
+                    Intent demoIntent = new Intent(MenuActivity.this.getApplicationContext(), ModelActivity.class);
+                    //Intent demoIntent = new Intent(MenuActivity.this.getApplicationContext(), TranslucentGLSurfaceViewActivity.class);
                     demoIntent.putExtra("immersiveMode", "false");
-                    demoIntent.putExtra("backgroundColor", "0 0 0 1");
+                    demoIntent.putExtra("backgroundColor", "0 0 0 0");
                     MenuActivity.this.startActivity(demoIntent);
                     break;
                 case GITHUB:

@@ -3,6 +3,7 @@ package org.andresoviedo.android_3d_model_engine.view;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 	private float previousX = 0.0f;
 	private float previousY = 0.0f;
 	private boolean isDown = false;
+	private long previousDownTime;
 
 	private final ModelRenderer mRenderer;
 
@@ -73,13 +75,14 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		/*try {
-			return touchController.onTouchEvent(event);
+		try {
+			return touchController.onTouchEvent(event, mRenderer.getProjectionMatrix());
 		} catch (Exception ex) {
 			Log.e("ModelSurfaceView","Exception: "+ ex.getMessage(),ex);
-		}*/
-		//return false;
+		}
+		return false;
 
+		/*
 		float x = event.getX();
 		float y = event.getY();
 
@@ -88,6 +91,12 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 				previousX = x;
 				previousY = y;
 				isDown = true;
+				if(SystemClock.uptimeMillis() - previousDownTime < 2000){
+					Log.v("testtime", Long.toString(SystemClock.uptimeMillis() - previousDownTime));
+					touchController.onTouchEvent(event);
+				}
+
+				previousDownTime = SystemClock.uptimeMillis();
 				break;
 
 			case MotionEvent.ACTION_MOVE:
@@ -110,8 +119,8 @@ public class ModelSurfaceView extends GLSurfaceView implements EventListener {
 				break;
 		}
 
-
 		return true;
+		*/
 	}
 
 	public ModelRenderer getModelRenderer() {

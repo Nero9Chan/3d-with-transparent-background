@@ -69,6 +69,9 @@ public class TouchController {
     private float[] rotationVector = new float[4];
 	private float previousRotationSquare;
 
+	private long previousDownTime;
+	private boolean shouldDrag = false;
+
 	public TouchController(Activity parent) {
 		super();
 		try {
@@ -95,7 +98,7 @@ public class TouchController {
 		AndroidUtils.fireEvent(listeners, eventObject);
 	}
 
-	public boolean onTouchEvent(MotionEvent motionEvent) {
+	public boolean onTouchEvent(MotionEvent motionEvent, float[] matrix) {
 
 		Log.v("TouchController","Processing MotionEvent...");
 		final int pointerCount = motionEvent.getPointerCount();
@@ -120,6 +123,12 @@ public class TouchController {
 				moving = false;
 				break;
 			case MotionEvent.ACTION_DOWN:
+				if(motionEvent.getPointerCount() == 1 && SystemClock.uptimeMillis() - previousDownTime < 500){
+					Log.v("testtime", Long.toString(SystemClock.uptimeMillis() - previousDownTime));
+					shouldDrag = !shouldDrag;
+				}
+				previousDownTime = SystemClock.uptimeMillis();
+				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
 			case MotionEvent.ACTION_HOVER_ENTER:
 				Log.v(TAG, "Gesture changed...");
@@ -129,6 +138,9 @@ public class TouchController {
 				simpleTouch = false;
 				break;
 			case MotionEvent.ACTION_MOVE:
+				if(shouldDrag)
+					Matrix.translateM(matrix,0,dx1/15,-dy1/15,0);
+
 				moving = true;
 				simpleTouch = false;
 				touchDelay++;
@@ -215,14 +227,9 @@ public class TouchController {
 		if (touchDelay > 1) {
 			// INFO: Process gesture
 			if (pointerCount == 1 && currentPress1 > 4.0f) {
-			} else if (pointerCount == 1) {
-				if(isSelected){
-					fireEvent(new TouchEvent(this, TouchEvent.DRAG, width, height, previousX1, previousY1, x1, y1, dx1, dy1, 0, null));
-					//touchStatus = 6;
-				}
-				else{
+			} else if (pointerCount == 1 && !shouldDrag) {
 					fireEvent(new TouchEvent(this, TouchEvent.MOVE, width, height, previousX1, previousY1, x1, y1, dx1, dy1, 0, null));
-					touchStatus = TOUCH_STATUS_MOVING_WORLD;}
+					touchStatus = TOUCH_STATUS_MOVING_WORLD;
 			} else if (pointerCount == 2) {
 				if (fingersAreClosing) {
 					fireEvent(new TouchEvent(this, TouchEvent.PINCH, width, height, previousX1, previousY1, x1, y1, dx1, dy1, (length - previousLength), null));
