@@ -105,6 +105,7 @@ public class ModelActivity extends Activity implements EventListener {
         // Create our 3D scenario
         Log.i("ModelActivity","Loading Scene...");
         scene = new SceneLoader(this, paramUri, paramType, gLView);
+
         if (paramUri == null) {
             final LoaderTask task = new DemoLoaderTask(this, null, scene);
             task.execute();
@@ -120,6 +121,8 @@ public class ModelActivity extends Activity implements EventListener {
         try {
             Log.i("ModelActivity","Loading GLSurfaceView...");
             gLView = new ModelSurfaceView(this, backgroundColor, this.scene);
+            Log.v("parent", this.toString());
+            Log.v("parent", this.scene.toString());
             // We want an 8888 pixel format because that's required for
             // a translucent window.
             // And we want a depth buffer.
@@ -131,8 +134,16 @@ public class ModelActivity extends Activity implements EventListener {
             gLView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 
             gLView.addListener(this);
+            //setContentView(gLView);
+            //scene.setView(gLView);
+
+            //gLView.setZOrderOnTop(true);
+
+            //vvv This is my testing layout (no model loaded). Still figuring it out
+            //setContentView(R.layout.activity_new_model);
             setContentView(gLView);
             scene.setView(gLView);
+
             Log.d("checking", "SCENE: " + scene.toString());
             Log.d("checking", "THIS: " + this.toString());
             Log.d("checking", "BGCOLOR: " + backgroundColor);
