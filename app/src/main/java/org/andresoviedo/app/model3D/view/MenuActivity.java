@@ -12,6 +12,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +51,8 @@ public class MenuActivity extends ListActivity {
     private static final int REQUEST_CODE_ADD_FILES = 1200;
     private static final String SUPPORTED_FILE_TYPES_REGEX = "(?i).*\\.(obj|stl|dae)";
 
+    private static boolean imageToggle = false;
+
 
     private enum Action {
         LOAD_MODEL, GITHUB, SETTINGS, HELP, ABOUT, EXIT, UNKNOWN, DEMO
@@ -60,9 +67,56 @@ public class MenuActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        setListAdapter(new ArrayAdapter<>(this, R.layout.activity_menu_item,
-                getResources().getStringArray(R.array.menu_items)));
+        /*setListAdapter(new ArrayAdapter<>(this, R.layout.activity_menu_item,
+                getResources().getStringArray(R.array.menu_items)));*/
+
+
+        //HorizontalScrollView layout = (HorizontalScrollView) findViewById(R.id.HorizontalScrollView);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.ScrollView);
+
+        //ArrayList<ImageButton> buttons = new ArrayList<ImageButton>[];
+
+
+        ImageButton btn[] = new ImageButton[10];
+
+        for(int i=0; i<10; i++){
+            btn[i] = new ImageButton(this);
+            btn[i].setImageDrawable(getResources().getDrawable(R.drawable.duck));
+
+
+            layout.addView(btn[i]);
+            if(i == 0){
+                btn[i].setBackgroundColor(getResources().getColor(R.color.red));
+                btn[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        launchModelRendererActivity(Uri.parse("assets://org.andresoviedo.dddmodel2/models/Duck.dae")); //Duck.dae path
+                    }
+                });
+            }
+
+            if(i == 1){
+                btn[i].setBackgroundColor(getResources().getColor(R.color.blue));
+                btn[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ImageView imageView = findViewById(R.id.imageView);
+                        if(!imageToggle){
+                            imageView.setImageDrawable(getResources().getDrawable(R.drawable.house2));
+                        }
+                        else{
+                            imageView.setImageDrawable(getResources().getDrawable(R.drawable.house1));
+                        }
+                        imageToggle = !imageToggle;
+                    }
+                });
+            }
+
+        }
     }
+
+
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -139,6 +193,7 @@ public class MenuActivity extends ListActivity {
                 (String file) -> {
                     ContentUtils.provideAssets(this);
                     launchModelRendererActivity(Uri.parse("assets://" + getPackageName() + "/" + file));
+                    Log.v("file123", "assets://" + getPackageName() + "/" + file);
                 });
     }
 
